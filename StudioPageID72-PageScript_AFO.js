@@ -1,10 +1,10 @@
-/*== PageID=72 2023/04/24 ==================================================================
+/*== PageID=72 2023/06/19 ==================================================================
 	Custom Page Script 
 
 	Page ID:    ID=72
 	Products:   AFO-CONF1
 	
-	ChangeDate: 2023/04/24 -KV
+	ChangeDate: 2023/06/19 -KV
 ==========================================================================================*/
 
 /*========================================================
@@ -472,5 +472,7 @@
 	2023/04/13: +TOP allow CFab devices again (undo above)
 
 	2023/04/24: +prepAllow to include users stmetzger & ecogswell
+ 
+  	2023/06/19: +CSS changes for Add to Cart button;
 
 =========================================the meetings will continue until morale improves======*/
