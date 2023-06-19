@@ -1,11 +1,11 @@
 
-/*== PageID=74 2023/02/23 ==================================================================
+/*== PageID=74 2023/06/19 ==================================================================
     Custom Page Script (!! DEV ONLY !!)
     
     Page ID:    ID=74
     Products:   SMO-CONF4 (Dev only, not a real product)
     
-    Changed: 2023/02/28 -KV
+    Changed: 2023/06/19 -KV
     
     !! Testing replacing the function in events with document functions. 
 ==========================================================================================*/
@@ -56,6 +56,16 @@
         }
 
         /*============================================================
+            Adjust CSS for Add To Cart button
+                Added 2023/06/19
+        ============================================================*/
+        $('.add-config-to-cart').addClass('btn');
+        $('.add-config-to-cart').css("font-weight","bold");
+        $('.add-config-to-cart').css("margin-top", "13px");
+        $('.add-config-to-cart').css("margin-left","13px");
+
+
+        /*============================================================
             Trigger validate-fields on loading saved config
                 Added 2022/12/13
         ============================================================*/
@@ -93,29 +103,29 @@
 
 
 /*========================================================
-	Alternate Patterns
-		Added 2023/03/29
+    Alternate Patterns
+        Added 2023/03/29
 ========================================================*/
-	$('div.bAltPattern').hide();
+    $('div.bAltPattern').hide();
 
-	$(document).on('click', '.config-selection-image-slider.Pattern a', function (e) {
+    $(document).on('click', '.config-selection-image-slider.Pattern a', function (e) {
 
-		if (  $('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value') == "MATERIALS" ) {
-			$('div.bAltPattern').show();
-			$('div.bAltPattern').trigger('change');
-		} else {
-			$('div.bAltPattern').hide();
-		}
-	});
+        if (  $('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value') == "MATERIALS" ) {
+            $('div.bAltPattern').show();
+            $('div.bAltPattern').trigger('change');
+        } else {
+            $('div.bAltPattern').hide();
+        }
+    });
 
-	$(document).on('change', '.bAltPattern', function (e) {
+    $(document).on('change', '.bAltPattern', function (e) {
 
-		var frPtrn = $('div.bAltPattern :selected');
-		if ( frPtrn.attr('value') ) {
-			$('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value', frPtrn.attr('data-value'));
-			addToSummary("Pattern", frPtrn.attr('data-value'), 'cPattern_c');
-		}
-	});
+        var frPtrn = $('div.bAltPattern :selected');
+        if ( frPtrn.attr('value') ) {
+            $('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value', frPtrn.attr('data-value'));
+            addToSummary("Pattern", frPtrn.attr('data-value'), 'cPattern_c');
+        }
+    });
 
 
 
@@ -181,7 +191,7 @@
 ========================================================*/
     var modFN = 'input[field-name="ModType_c"]';
     $(modFN).on('change', function () {
-      	if ($(this).attr("data-value") == "M") {
+        if ($(this).attr("data-value") == "M") {
             $('.Mod.Notes').removeClass('show-mod-notes');
         } else {
             $('.Mod.Notes').addClass('show-mod-notes');
@@ -301,7 +311,10 @@
         }
     }
 
+
+
 /*== CHANGE LOG =================================================================================
+
     2022/11/21: No data was saving/sending for dMeas12, dMeas13. Issue corrected. 
     2022/11/23: ModNotes visibility rules reversed. Corrected here. 
     2022/12/08: Enabling Left/Right Separate Measurements;
@@ -310,4 +323,6 @@
     2022/12/13: Change validate-fields in function to shorten and move from $(document).ready();
     2022/12/14: Function to copy right-vals to blank left-vals when applicable;
     2022/12/15: Update code to fix issue with ModType_c References;
+    2023/06/13: +Adjust Add to Cart button CSS in DocumentReady
+    
 =========================================the meetings will continue until morale improves======*/
