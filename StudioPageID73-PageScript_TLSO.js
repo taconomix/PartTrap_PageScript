@@ -1,10 +1,10 @@
-/*== PageID=73 2023/04/24 ==================================================================
+/*== PageID=73 2023/06/19 ==================================================================
     Custom Page Script
     
     Page ID:    ID=73
     Products:   TLSO-CONF1
     
-    ChangeDate: 2023/04/24 -KV
+    ChangeDate: 2023/06/19 -KV
 ==========================================================================================*/
 
 
@@ -671,6 +671,7 @@
     2023/02/28: Hide Prepped Option except for TOP/SURESTEP;
     2023/02/28: Add PartTrap UserID to OrderDtl.PTUserEmail_c; -KV
     2023/04/24: +prepAllow to include users stmetzger & ecogswell
+    2023/06/19: +CSS changes for Add to Cart button;
     
 ===============================================================================================*/
 
