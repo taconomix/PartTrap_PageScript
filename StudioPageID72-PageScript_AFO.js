@@ -1,10 +1,10 @@
-/*== PageID=72 2023/06/19 ==================================================================
+/*== PageID=72 2023/04/24 ==================================================================
 	Custom Page Script 
 
 	Page ID:    ID=72
 	Products:   AFO-CONF1
 	
-	ChangeDate: 2023/06/19 -KV
+	ChangeDate: 2023/04/24 -KV
 ==========================================================================================*/
 
 /*========================================================
@@ -33,7 +33,7 @@
 	var myCust  = $(document.body).attr("data-customer");
 	var myUser  = document.getElementById("CurrentUserName").value;
 	var cfCusts = ["Asviray","MID46635", "SURESTEP", "davidt", "erics2","HANGER"];
-	var prepAllow = ['MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
+	var prepAllow = ['HANGER','MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	
 	if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
@@ -472,7 +472,5 @@
 	2023/04/13: +TOP allow CFab devices again (undo above)
 
 	2023/04/24: +prepAllow to include users stmetzger & ecogswell
- 
-  	2023/06/19: +CSS changes for Add to Cart button;
 
 =========================================the meetings will continue until morale improves======*/

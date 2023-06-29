@@ -1,10 +1,10 @@
-/*== PageID=73 2023/06/19 ==================================================================
+/*== PageID=73 2023/04/24 ==================================================================
     Custom Page Script
     
     Page ID:    ID=73
     Products:   TLSO-CONF1
     
-    ChangeDate: 2023/06/19 -KV
+    ChangeDate: 2023/04/24 -KV
 ==========================================================================================*/
 
 
@@ -109,7 +109,7 @@
     var modPrep = 'input[field-name="kPrepped_c"]';
     var myCust  = $(document.body).attr("data-customer");
     var myUser  = document.getElementById("CurrentUserName").value;
-    var prepAllow = ['MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
+    var prepAllow = ['HANGER','MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
     if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
         $(modPrep).parents('div.config-selection-radio').hide();
@@ -671,7 +671,6 @@
     2023/02/28: Hide Prepped Option except for TOP/SURESTEP;
     2023/02/28: Add PartTrap UserID to OrderDtl.PTUserEmail_c; -KV
     2023/04/24: +prepAllow to include users stmetzger & ecogswell
-    2023/06/19: +CSS changes for Add to Cart button;
     
 ===============================================================================================*/
 
