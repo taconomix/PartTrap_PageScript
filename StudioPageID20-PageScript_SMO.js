@@ -108,11 +108,12 @@
 /*========================================================
 	Customer-Specific Option Changes
 		Changed 2023/04/24
+		--Added HANGER to prepAllow until we add users
 ========================================================*/
 	var modPrep = 'input[field-name="kPrepped_c"]';
 	var myCust  = $(document.body).attr("data-customer");
 	var myUser  = document.getElementById("CurrentUserName").value;
-	var prepAllow = ['MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
+	var prepAllow = ['MID46635', 'HANGER', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
 		$(modPrep).parents('div.config-selection-radio').hide();
