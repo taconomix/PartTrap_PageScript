@@ -1,10 +1,11 @@
-/*== PageID: 101 -2023/07/13 =================================================
+/*== PageID: 102 -2023/07/13 =================================================
     
     Custom Page Script - All Page Logic
         Hard-coded Script Elements Removed
         NOT FULLY TESTED
     
-    Page ID:  ID=101
+    Page ID:  ID=102
+    Products: SMO-CONF4 (Development)
     Products: SMO-CONF1 (surestep), SMO-CONF2 (bigshot), SMO-CONF3 (trad)
     
     Created: 2023/07/13
