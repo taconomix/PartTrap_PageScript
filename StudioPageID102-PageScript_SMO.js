@@ -665,7 +665,7 @@
             if ($(element).find('input').is(':checked')) $(element).removeClass("not-valid");
             else $(element).addClass("not-valid");
 
-            var csmv = '.config-selection-measurement-value', var r = 'required';
+            var csmv = '.config-selection-measurement-value', r = 'required';
             
             if ( modType == "M" ) {
                 $('.Circumference').closest(csmv).attr(r, r);
