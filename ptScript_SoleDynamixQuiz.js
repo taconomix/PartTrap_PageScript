@@ -6,7 +6,7 @@ $(document).on('click', '.next-config-step', function (e) {
   var container = $(this).closest('.config-step-selection').find('.config-selection-container');
 
   if ($(container).attr('required')) {
-      console.log("REQUIERD!!!!!"); 
+      //console.log("REQUIERD!!!!!"); 
       if ($(container).hasClass("is-selected")) {
           $(this).closest('.config-step-selection').closest('div').addClass("hidden");
           $(this).closest('.config-step-selection').next().closest('div').removeClass("hidden");
@@ -46,7 +46,7 @@ function scrollToElement(element) {
 }
 */
 
-console.log('kv was here');
+var kvLog = "KV Was Here";
 
 var isSavedConfig = false;
 var queryString = window.location.search;
@@ -54,7 +54,7 @@ var urlParams = new URLSearchParams(queryString);
 if (urlParams.get('configId')) {
     isSavedConfig = true;
 }
-console.log("IS SAVED CONFIG: " + isSavedConfig);
+//console.log("IS SAVED CONFIG: " + isSavedConfig);
 $('.save-config-button').on('click', function (e) {
     if (confirm("Save configuration: " + $('[field-name="LastNamePID_c"]').val()) == true) {
         addNotesToConfig();
@@ -106,7 +106,7 @@ $(document).on('click', '.add-config-to-cart', function (e) {
                 if (isSavedConfig) {
                     deleteSavedConfig();
                 }
-                // window.location.href = window.location.origin + '/Checkout';
+                window.location.href = window.location.origin + '/Checkout';
             }
             else {
                 alertify.error(result.Message);
