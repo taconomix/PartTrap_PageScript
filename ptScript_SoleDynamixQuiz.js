@@ -46,6 +46,8 @@ function scrollToElement(element) {
 }
 */
 
+console.log('kv was here');
+
 var isSavedConfig = false;
 var queryString = window.location.search;
 var urlParams = new URLSearchParams(queryString);
@@ -104,7 +106,7 @@ $(document).on('click', '.add-config-to-cart', function (e) {
                 if (isSavedConfig) {
                     deleteSavedConfig();
                 }
-                window.location.href = window.location.origin + '/Checkout';
+                // window.location.href = window.location.origin + '/Checkout';
             }
             else {
                 alertify.error(result.Message);
