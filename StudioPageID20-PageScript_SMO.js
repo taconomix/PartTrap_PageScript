@@ -16,6 +16,11 @@
 	/* Custom Style Sheet from PartTrap Studio PageScript */
 
 	.block-from-summary .config-selection-button.separate {
+	}
+ 	
+  	.alertify-log-error {
+    		background: #4c5966;
+    		color: #FFFFFF
 	}`;
 
 
