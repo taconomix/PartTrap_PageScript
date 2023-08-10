@@ -1,10 +1,10 @@
-/*== PageID=20 2023/06/13 ====================================================
+/*== PageID=20 2023/08/10 ====================================================
 	Custom Page Script 
 	
 	Page ID:    ID=20
 	Products:   SMO-CONF1 (surestep), SMO-CONF2 (bigshot), SMO-CONF3 (trad)
 	
-	Changed: 2023/06/13 -KV
+	Changed: 2023/08/10 -KV
 ============================================================================*/
 
 /*========================================================
@@ -413,4 +413,5 @@
 
 	2023/06/19: +CSS changes for Add to Cart button;
 
+	2023/08/10: +CSS Style change for Alertify.Error;
 =========================================the meetings will continue until morale improves======*/
