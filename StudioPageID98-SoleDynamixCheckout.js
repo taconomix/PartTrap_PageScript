@@ -63,7 +63,6 @@
     
 =================================================================*/
 
-$(document).ready(function(){
     $('#summaryWrapper').children('.row').children('.col-sm-12').append('<div class = "row ebiz"</div>');
     $('.ebiz').append('<div class = "ebimg" style = "float:right"</div>');
     $('.ebimg').append('<img src="/en/image/getthumbnail/1335?width=135&amp;height=31&amp;s=001" data-id="1335">');
@@ -74,7 +73,7 @@ $(document).ready(function(){
     //put with the other dev one
     $('.col-sm-7.col-xs-6 h5').css({'padding-left': '175px'});
     $('.col-sm-5.col-xs-6 h5').css({'padding-right': '10px'});
-});
+
 
 
 
