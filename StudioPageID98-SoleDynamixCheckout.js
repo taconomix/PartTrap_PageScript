@@ -63,10 +63,17 @@
     
 =================================================================*/
 
-    $('#summaryWrapper').children('.row').children('.col-sm-12').append('<div class = "row ebiz"</div>');
-    $('.ebiz').append('<div class = "ebimg" style = "float:right"</div>');
+/*=================================================================
+
+    Add Powered by EBiz Charge to the cart page
+    Reformat part of the checkout process
+    
+=================================================================*/
+
+    $('#summaryWrapper').children('.row').children('.col-sm-12').append('<div class="row ebiz"></div>');
+    $('.ebiz').append('<div class="ebimg" style="float: right;"></div>');
     $('.ebimg').append('<img src="/en/image/getthumbnail/1335?width=135&amp;height=31&amp;s=001" data-id="1335">');
-    $('.ebiz').append('<div class = "ebtxt" style = "float:right"</div>');
+    $('.ebiz').append('<div class="ebtxt" style="float: right;"></div>');
     $('.ebtxt').append('<h6 style="padding-right: 5px;">Powered by</h6>');
     $('.ebiz').css({'text-align': 'right', 'padding-right': '15px', 'padding-top': '3px'});
     
