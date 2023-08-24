@@ -1,10 +1,10 @@
-/*== PageID=20 2023/08/10 ====================================================
+/*== PageID=20 2023/08/24 ====================================================
 	Custom Page Script 
 	
 	Page ID:	ID=20
 	Products:   SMO-CONF1 (surestep), SMO-CONF2 (bigshot), SMO-CONF3 (trad)
 	
-	Changed: 2023/08/10 -KV
+	Changed: 2023/08/24 -KV
 ============================================================================*/
 
 /*========================================================
@@ -369,6 +369,9 @@
 ========================================================*/
 	
 	// Shoe Options Styling
+
+	var shoeCartButtonColor = '#9cb92d';
+
 	$('.shoeType .col-sm-6.selected-image-parent-container h3').html('SELECTED SHOES');
 	$('.config-selection-image-slider.shoeType.row').children('.selected-image-parent-container').children('.row').children().children().css({'width': '360px', 'height': '360px'});
 	$('.config-selection-container.config-selection-image-slider.shoeType.row').append('<div class="col-sm-12">');
@@ -381,7 +384,7 @@
 	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').css({'width': '440px', 'height': '79.9px'});
 	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').children('.add-shoe-to-cart').css({'height': '33.98px', 'margin-top': '46.01px'});
 	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').css({'display': 'grid', 'justify-content': 'left', 'align-itmes': 'center', 'text-align': 'center'});
-	$('.add-shoe-to-cart').css({'background': '#66becb', 'border-color': '#66becb', 'color': '#fff', 'border': '1px solid transparent'});
+	$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor, 'color': '#fff', 'border': '1px solid transparent'});
 
 
 	// Hide shoe size dropdown and button
@@ -389,11 +392,11 @@
 	$('.col-sm-6.button').hide();
 
 
-// Variables used for Shoe PartNum Retreival
-var meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() ); // Measurement #6 Value
-var ShoeSize = 0; 
-var ShoeProd = '';
-var shoePartNum = '';
+	// Variables used for Shoe PartNum Retreival
+	var meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() ); // Measurement #6 Value
+	var ShoeSize = 0; 
+	var ShoeProd = '';
+	var shoePartNum = '';
 
 
 // Toggle visibility when Meas6 changes
@@ -418,6 +421,11 @@ $(document).on('click', 'div.shoeType > .config-image-list', function (e) {
 	// Get Product PartNum prefix for selected shoe
 	ShoeProd = $('.shoeType').find('.config-selected-image-container').children().attr('data-value'); 
 	
+	// Re-set size to "" when new color is clicked
+	$('.shoeSizes option').prop('selected', function() {
+    	return this.defaultSelected;
+	});
+
 	// Get Sizing, Availability, hide out of stock, get part number
 	makeMagic(ShoeProd);
 });
@@ -442,11 +450,13 @@ $(document).on('change', 'div.shoeSizes', function(){
 
 
 // Button Hover styling
-$('.add-shoe-to-cart').hover(function(){
+$('.add-shoe-to-cart').hover(function() {
+
 	$('.add-shoe-to-cart').css({'background': '#4c5966', 'border-color': '#4c5966'});
 	}, function() {
-	$('.add-shoe-to-cart').css({'background': '#66becb', 'border-color': '#66becb'});
-});
+		$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor});
+	}
+);
 
 
 // Add Shoes to cart
@@ -563,7 +573,7 @@ $(document).on('click', '.col-sm-6.button', function (e) {
 
 		if ( isNaN(meas6val) || meas6val == 0) {
 			
-			//Show the dropdown menu and button if a shoe is Selected
+			// Show the size selector + button if a shoe is Selected
 			if (ShoeProd !== '') {
 				$('.config-selection-dropdown.shoeSizes.col-sm-6').show();
 				setSizeRows(ShoeProd);
@@ -572,8 +582,7 @@ $(document).on('click', '.col-sm-6.button', function (e) {
 		} else {
 				
 			// Increase by 1 size every 1/4 inch, starting at 2 5/8" 
-			ShoeSize = 3;
-			ShoeSize += Math.floor( 4 * (meas6val - 2.625) );
+			ShoeSize = 3 + Math.floor( 4 * (meas6val - 2.625) );
 				
 			//Show the button if a shoe is Selected
 			$('.col-sm-6.button').show();
@@ -751,5 +760,7 @@ $(document).on('click', '.col-sm-6.button', function (e) {
 	2023/08/10: +CSS Style change for Alertify.Error;
 
 	2023/08/17: +Add Shoe Selection & Cart-add capability;
+
+	2023/08/24: +Adjust Shoe Cart Button CSS;
 	
 =========================================the meetings will continue until morale improves======*/
