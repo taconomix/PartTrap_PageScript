@@ -16,6 +16,11 @@
 
 	.config-selection-radio.Brand {
 		display:none;
+	}
+
+	.alertify-log-error {
+				background: #4c5966;
+				color: #FFFFFF
 	}`;
 
 	var css = document.createElement("style");
@@ -42,10 +47,10 @@
 
 
 
-/*============================================================
-	Trigger validate-fields on loading saved config
-		Added 2022/12/13
-============================================================*/
+	/*==================================================
+		Trigger validate-fields on loading saved config
+			Added 2022/12/13
+	===================================================*/
 	$(document).ready(function() {
 		if (isSavedConfig) {
 			$('.measurement-value-container').find('.measurement-validate-input').trigger('change');
@@ -372,17 +377,147 @@
 
 
 
+/*========================================================
+	Add Shoe Options + Add shoes to cart
+		Added 2023/08/17 
+				--Bryce Wieczorek <bwieczorek@Hanger.com>
+========================================================*/
+	
+	// Shoe Options Styling
+	var shoeCartButtonColor = '#9cb92d'; 
+
+	$('.shoeType .col-sm-6.selected-image-parent-container h3').html('SELECTED SHOES');
+	$('.config-selection-image-slider.shoeType.row').children('.selected-image-parent-container').children('.row').children().children().css({'width': '360px', 'height': '360px'});
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').append('<div class="col-sm-12">');
+	$('.config-selection-container.config-selection-dropdown.row.shoeSizes').children().removeClass('col-sm-6');
+	$('.config-selection-container.config-selection-dropdown.row.shoeSizes').removeClass('config-selection-container row');
+	$('.config-selection-dropdown.shoeSizes').addClass('col-sm-6');
+	$('.config-selection-dropdown.shoeSizes.col-sm-6').appendTo('.config-selection-container.config-selection-image-slider.shoeType.row');
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').append('<div class="col-sm-6 button">');
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').append('<button class="add-shoe-to-cart"><b>Add Shoe to cart</b></button>');
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').css({'width': '440px', 'height': '79.9px'});
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').children('.add-shoe-to-cart').css({'height': '33.98px', 'margin-top': '46.01px'});
+	$('.config-selection-container.config-selection-image-slider.shoeType.row').children('.col-sm-6.button').css({'display': 'grid', 'justify-content': 'left', 'align-itmes': 'center', 'text-align': 'center'});
+	$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor, 'color': '#fff', 'border': '1px solid transparent'});
+
+
+	// Hide shoe size dropdown and button
+	$('.config-selection-dropdown.shoeSizes.col-sm-6').hide();
+	$('.col-sm-6.button').hide();
+
+
+	// Variables used for Shoe PartNum Retreival
+	var meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() ); // Measurement #6 Value
+	var ShoeSize = 0; 
+	var ShoeProd = '';
+	var shoePartNum = '';
+
+
+	// Toggle visibility when Meas6 changes
+	$(document).on('change', '[validate-field="dMeas6_c"]' , function (e) { 
+		
+		meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() );
+		
+		if ( isNaN(meas6val) ) return;
+
+		if ( meas6val > 6.25 || meas6val < 2.75 )
+			 $('div.shoeType').hide();
+		else $('div.shoeType').show();
+	}); 
+
+
+
+	// Set visible size options, get part number when type is selected
+	$(document).on('click', 'div.shoeType > .config-image-list', function (e) {
+		
+		// Get Product PartNum prefix for selected shoe
+		ShoeProd = $('.shoeType').find('.config-selected-image-container').children().attr('data-value'); 
+		
+		// Re-set size to "" when new color is clicked
+		$('.shoeSizes option').prop('selected', function() {
+	    	return this.defaultSelected;
+		});
+
+		// Get Sizing, Availability, hide out of stock, get part number
+		makeMagic(ShoeProd);
+	});
+
+
+
+	// Get Size, show Add To Cart Button
+	$(document).on('change', 'div.shoeSizes', function(){
+		
+		// Get the selected shoe size value from dropdown
+		ShoeSize = $('div.shoeSizes :selected').attr('data-value'); 
+
+		if (ShoeSize == 'None' || ShoeSize == 0) 
+			return;
+
+		shoePartNum = getShoePartNum(ShoeProd, ShoeSize);
+		
+		// Only show Cart button when PartNum is valid
+		$('.col-sm-6.button').show(); 
+		
+	});
+
+
+	// Button Hover styling
+	$('.add-shoe-to-cart').hover(function() {
+
+		$('.add-shoe-to-cart').css({'background': '#4c5966', 'border-color': '#4c5966'});
+		}, function() {
+			$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor});
+		}
+	);
+
+
+	// Add Shoes to cart
+	$(document).on('click', '.col-sm-6.button', function (e) {
+
+		addExtrasToCart( shoePartNum );
+
+	});
+
+
 
 /*========================================================
 	Functions referenced above.
 		Changed 2023/03/17
 ========================================================*/
+		function addExtrasToCart( stkCode ) {
+
+		var data = { 
+
+			'Product.StockCode': stkCode, 
+			'Product.ProductType': "Product", 
+			'Product.IsRefinementOptional': "False", 
+			Quantity: 1 
+		};
+
+		$.post('/Basket/AddToBasket',data,function ( result ) {
+
+			if (result) {
+
+				if (result.success) {
+
+					alertify.success("Shoes Added to Cart");
+					PT.Sections.Basket.miniBasket.UpdateMiniBasket();
+
+				} else {
+					alertify.error("UNABLE TO ADD ITEM: We apologize. This item is temporarily out of stock.");
+				}
+			}
+		});
+	}
+
+
 	function flipRightMeas() { // Swap image position on Right Meas Boxes
 		for (var i = 0; i < msBox1st.length; i++) {
 			var fN = '[field-name="dMeas' + msBox1st[i] + 'r_c"]';
 			$(fN).parents('div.col-sm-12').children().first().insertAfter($(fN).parents('div.col-sm-6'));
 		}
 	}
+
 
 	function toggleMeasBoxes(sType = 'equal') { // Show|Hide right, change labels for all meas boxes for split
 		var NotValClass = ( $(modFN+':checked').attr("data-value") == "M" )? "not-valid": "valid-not-valid";
@@ -403,6 +538,7 @@
 		}
 	}
 
+
 	function validRightMeas(msNum) { // Trigger changes to save+send data. Adapted from PartTrap's AFO <script>.   
 		var NotValClass = ( $(modFN+':checked').attr("data-value") == "M" ) ? "not-valid" : "valid-not-valid";
 		var fName = '[field-name="dMeas' + msNum + 'r_c"]';
@@ -420,6 +556,7 @@
 		$(fName).trigger("change");
 	}
 
+
 	function copyValsTo(sDest = 'right') { // Copy meas values+inputs to other foot if blank
 		for ( var i = 1; i <= 13; i++ ) {
 			var mvc = '.measurement-value-container', dI = '.inch-whole', dN = '.inch-divedend', dD = '.inch-devisor';
@@ -434,6 +571,7 @@
 		}
 	}
 
+
 	function filterAFOs ( arKeys0, arKeys1 = [] ) { // Hide all AFOs except from array parameter
 		$('.Device.Type .config-image-list .col-sm-3').addClass('hidden');
 			
@@ -445,7 +583,165 @@
 		}
 	}
 
+	
+	/*========================================================
+		Shoe Add Functions - 2023/08/17
+					--Bryce Wieczorek <bweiczorek@Hanger.com>
+	========================================================*/
+	function makeMagic(ShoeProd) {
 
+		if ( isNaN(meas6val) || meas6val == 0) {
+			
+			// Show the size selector + button if a shoe is Selected
+			if (ShoeProd !== '') {
+				$('.config-selection-dropdown.shoeSizes.col-sm-6').show();
+				setSizeRows(ShoeProd);
+			}
+
+		} else {
+				
+			// Increase by 1 size every 1/4 inch, starting at 2 5/8" 
+			ShoeSize = 3 + Math.floor( 4 * (meas6val - 2.625) );
+				
+			//Show the button if a shoe is Selected
+			$('.col-sm-6.button').show();
+			shoePartNum = getShoePartNum(ShoeProd, ShoeSize);
+		}
+	}
+
+
+	function getShoePartNum  ( prefix, size ) { 
+
+		var letters = ( size >= 10 )? 'WY': 'WT';
+		var sSize   = ( size >  13 )? size-13: size;
+		
+		switch (prefix) {
+			
+			// Sized: 3T - 12Y;
+			case 'SSSABK':
+			case 'SSSAPK':
+			case 'SSSNPK':
+			case 'SSSNBK':
+			case 'SSSNBL':
+				sSize += '.0'
+				return prefix + sSize + letters;
+				break;
+			
+			// Sizes: 3T - 9T; (Extra 0 in PartNum)
+			case 'SSSNGR':  
+			case 'SSSNPU':
+				sSize += '.0'
+				return prefix + '0' + sSize + letters;
+				break;
+			
+			// Sizes: 10Y - 3Y; (Extra 0 in PartNum)
+			case 'SSSNGO':
+			case 'SSSNBG':
+				sSize += '.0'
+				return prefix + (sSize<10? '0': '') + sSize + letters;
+				break;
+			
+			// Sizes: 3T - 3Y;
+			case 'SSHE':
+				letters = 'TAN' + letters;
+				return prefix + (sSize<10? '0': '') + sSize + letters;
+				break;
+		}
+	}
+
+
+	function setSizeRows (prod) {
+
+		switch(prod) {
+
+			//shoes without sizes 10Y - 3Y
+			case 'SSSNGR':
+			case 'SSSNPU':
+				for ( var i = 3; i <= 16; i++ ) {
+					if (i > 13) {
+						var num = i - 13;
+						var jqname = '.shoeSizes option[value="Youth Size 0' + num + '"]';
+						$(jqname).hide();
+					}else if ( i == 13) {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).hide();
+					}else if (i < 10) {
+						var jqname = '.shoeSizes option[value="Toddler Size 0' + i + '"]';
+						$(jqname).show();   
+					}else {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).hide();
+					}
+				}
+				break;
+
+			//shoes with only sizes 10Y - 3Y
+			case 'SSSNGO':
+			case 'SSSNBG':
+				for ( var i = 3; i <= 16; i++ ) {
+					if (i > 13) {
+						var num = i - 13;
+						var jqname = '.shoeSizes option[value="Youth Size 0' + num + '"]';
+						$(jqname).show();
+					}else if ( i == 13) {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).show();
+					}else if (i < 10) {
+						var jqname = '.shoeSizes option[value="Toddler Size 0' + i + '"]';
+						$(jqname).hide();
+					}else {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).show();
+					}
+				}
+				break;
+
+			//shoes with sizes 3T - 12Y
+			case 'SSSAPK':
+			case 'SSSABK':
+			case 'SSSNPK':
+			case 'SSSNBK':
+			case 'SSSNBL':
+				for ( var i = 3; i <= 16; i++ ) {
+					if (i > 13) {
+						var num = i - 13;
+						var jqname = '.shoeSizes option[value="Youth Size 0' + num + '"]';
+						$(jqname).hide();
+					}else if ( i == 13) {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).hide();
+					}else if (i < 10) {
+						var jqname = '.shoeSizes option[value="Toddler Size 0' + i + '"]';
+						$(jqname).show();
+					}else {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						console.log(3 - jqname);
+						$(jqname).show();
+					}
+				}
+				break;
+
+			//shoe(s) with all of the sizes
+			case 'SSHE':
+				for ( var i = 3; i <= 16; i++ ) {
+					if (i > 13) {
+						var num = i - 13;
+						var jqname = '.shoeSizes option[value="Youth Size 0' + num + '"]';
+						$(jqname).show();
+					} else if ( i == 13) {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).show();
+					} else if (i < 10) {
+						var jqname = '.shoeSizes option[value="Toddler Size 0' + i + '"]';
+						$(jqname).show();
+					} else {
+						var jqname = '.shoeSizes option[value="Youth Size ' + i + '"]';
+						$(jqname).show();
+					}
+				}
+				break;
+		}
+	}
 
 
 /*== CHANGE LOG =================================================================================
@@ -472,5 +768,7 @@
 	2023/04/13: +TOP allow CFab devices again (undo above)
 
 	2023/04/24: +prepAllow to include users stmetzger & ecogswell
+
+	2023/08/24: +Add Shoe Selection & Cart-add capability;
 
 =========================================the meetings will continue until morale improves======*/
