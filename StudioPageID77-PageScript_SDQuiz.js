@@ -49,7 +49,9 @@
 /*========================================================
     Redirect to landing pages on Add-to-Cart
         Changed 2023/08/30
-========================================================*/
+
+        --waiting for approval to enable
+========================================================
 
     // Remove original on-click function
     $(document).off('click', '.add-config-to-cart');
@@ -78,7 +80,7 @@
                 if (result.Success) {
 
                     // Construct link to custom pages
-                    var sdPartNum = $('[field-name="stockCodeShoe"]').attr('data-value');
+                    var sdPartNum = $('.config-selected-image-container [field-name="stockCodeShoe"]').attr('data-value');
 
                     var partNum = ['SOLEDYNAMIX-SPEC', 'SOLEDYNAMIX-PERF', 'SOLEDYNAMIX-COMF'];
                     var linkEnd = ['condition-specific', 'sport', 'comfort'];
@@ -112,5 +114,7 @@
 /*== CHANGE LOG ===============================================================
 
     2023/08/29: +Redirect to product landing pages after Cart add;
+    2023/08/30: +Update partnum selector in redirect;
+                +Add "None" condition option functionality;
 
 =============================================================================*/
