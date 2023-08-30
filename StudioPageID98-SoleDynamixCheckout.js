@@ -1,38 +1,68 @@
+/*=================================================================
+    Add "Powered by EBiz Charge" to the cart page
+=================================================================*/
+
+    var eBizImg = '<img src="/en/image/getthumbnail/1335?width=135&amp;height=31&amp;s=001" data-id="1335">';
+    var eBizTxt = '<h6 style="padding-right: 5px;">Powered by</h6>';
+
+    jQuery('<div>', {
+
+        class: 'row ebiz col-sm-12 pull-right',
+        style: 'text-align: right; padding-right: 15px; padding-top: 3px; display: none;'
+
+    }).insertAfter('#summarySection');
+
+    $('.ebiz').append('<div style="float: right;">' + eBizImg + '</div>');
+    $('.ebiz').append('<div style="float: right;">' + eBizTxt + '</div>');
+
 
 
 
 /*==================================================================
-    Change #btnDelivery Text (span)
-
-        Bryce: Ask Katie what this should say.
+    Event listener, fixes bugs on skipped fields
+            -not sure why. I need to learn JavaScript.
 ==================================================================*/
-    
-    var newButtonText = "Confirm and review order"; 
 
-    $(document).ready(function() {
+    $(document).on('change', '#btnRow', function (e) {
 
-        $('[id="btnDelivery"]')[0].textContent = newButtonText;
-
+        if ( $(this).attr('data-value') ) $('.ebiz').show();
+        else $('.ebiz').hide();
     });
 
 
 
 
 /*==================================================================
-    Trigger #btnSummary click event on #btnDelivery click
-        Skips Delivery & Payment sections
-        Hides Delivery options section
-
-        -Appears to function properly, not tested enough
-        -Can we eliminate the scrolling?
+    Change #btnDelivery Text 
 ==================================================================*/
 
-    $(document).on('click', '[id="btnDelivery"]', function (e) {
+    $('#btnDelivery').html("Confirm & Review Order");
+
+
+
+/*==================================================================
+    Skip Delivery, Payment fields after address entry 
+            -Can we eliminate the scrolling?
+==================================================================*/
+
+    $('#btnDelivery').on('click', function () {
         
         if ( $('[id="SelectState"]').children("option:selected").attr('value').length ) {
-        
-           $('[id="btnSummary"]').click();
-           $('[id="referencesField"]').hide();
+
+            $('#btnChangeAddress').attr('style',"display: none;");
+            $('#referencesField').attr('style',"margin-top: 30px; display: none;");
+            $('#btnPayment').click();
+
+            $('#btnSummary').attr('style',"display: none;");
+            $('#btnChangeDelivery').attr('style',"display: none;");
+            $('#paymentField').attr('style',"margin-top: 30px; display: none;");
+            $('#btnSummary').click();
+
+            $('#btnDelivery').attr('style','');
+            $('#backToBasket').attr('style','');
+
+            $('#btnRow').attr('data-value',true);
+            $('#btnRow').change();
         }
     });
 
@@ -40,56 +70,20 @@
 
 
 /*==================================================================
-    Trigger #btnChangeAddress click event on #btnPrevious click
-        Skips back to address
-        Hides Delivery options section
-        
-        -Appears to function properly, not tested enough
+    Skip back to address entry from final checkout
 ==================================================================*/
-    
-    $(document).on('click', '[id="btnPrevious"]', function (e) {
-        
-           $('[id="btnChangeAddress"]').click();
-           $('[id="referencesField"]').hide();
-    }); 
 
+    $(document).on('click', '#btnPrevious', function () {
 
+            $('#btnChangeDelivery').click();
+            $('#paymentField').attr('style',"margin-top: 30px; display: none;");
+            
+            $('#btnChangeAddress').click();
+            $('#referencesField').attr('style',"margin-top: 30px; display: none;");
+            
+            $('#addressInputFields').find('input' ).removeAttr('disabled');
+            $('#addressInputFields').find('select').removeAttr('disabled');
 
-
-/*=================================================================
-
-    Add Powered by EBiz Charge to the cart page
-    Reformat part of the checkout process
-    
-=================================================================*/
-
-/*=================================================================
-
-    Add Powered by EBiz Charge to the cart page
-    Reformat part of the checkout process
-    
-=================================================================*/
-
-    $('#summaryWrapper').children('.row').children('.col-sm-12').append('<div class="row ebiz"></div>');
-    $('.ebiz').append('<div class="ebimg" style="float: right;"></div>');
-    $('.ebimg').append('<img src="/en/image/getthumbnail/1335?width=135&amp;height=31&amp;s=001" data-id="1335">');
-    $('.ebiz').append('<div class="ebtxt" style="float: right;"></div>');
-    $('.ebtxt').append('<h6 style="padding-right: 5px;">Powered by</h6>');
-    $('.ebiz').css({'text-align': 'right', 'padding-right': '15px', 'padding-top': '3px'});
-    
-    //put with the other dev one
-    $('.col-sm-7.col-xs-6 h5').css({'padding-left': '175px'});
-    $('.col-sm-5.col-xs-6 h5').css({'padding-right': '10px'});
-
-
-
-
-
-
-
-
-
-
-
-
-
+            $('#btnRow').attr('data-value','');
+            $('#btnRow').change();
+    });
