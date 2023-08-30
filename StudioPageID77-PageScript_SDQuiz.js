@@ -1,17 +1,54 @@
-/*== PageID=77 2023/08/29 ==============================================
+/*== PageID=77 2023/08/30 ==============================================
     
     Sole Dynamix Quiz Custom Page Script 
 
     Page ID:    ID=77
     Products:   SOLEDYNAMIX-PERF, SOLEDYNAMIX-COMF, SOLEDYNAMIX-SPEC
     
-    ChangeDate: 2023/08/29 -KV
+    ChangeDate: 2023/08/30 -KV
 ======================================================================*/
 
 
 /*========================================================
+    Condition selection "none" functionality
+        Changed 2023/08/30
+========================================================*/
+
+    //_ Add classes to Condition options
+    var specDxBox = $('.config-selection-button.Additional');
+    specDxBox.find('input').addClass('dx');
+    specDxBox.find('input[name="None"]').removeClass('dx').addClass('noDx');
+
+
+    //_ Clear "None" when any condition is selected
+    $('.dx').on('click', function (e) { 
+        if ( $(this).is(':checked') ) $('.noDx:checked').click(); 
+    });
+
+
+
+    //_ Clear conditions when "None" is selected
+    $('.noDx').on('click', function (e) { $('.dx:checked').click(); });
+
+
+    //_ Check "None" condition for Sport & Comfort, uncheck for Spec
+    var insoleTypeNextStep = $('.config-first-step-selection span');
+    
+    insoleTypeNextStep.on('click', function (e) {
+        
+        var selectedType = $('.config-selected-image-container [field-name="stockCodeShoe"]');
+        var isSpec = selectedType.attr('data-value').substring(12) == "SPEC";
+
+        if ( isSpec == $('.noDx').is(':checked') ) 
+            $('.noDx').click();
+    });
+
+
+
+
+/*========================================================
     Redirect to landing pages on Add-to-Cart
-        Changed 2023/08/29
+        Changed 2023/08/30
 ========================================================*/
 
     // Remove original on-click function
@@ -41,11 +78,13 @@
                 if (result.Success) {
 
                     // Construct link to custom pages
+                    var sdPartNum = $('[field-name="stockCodeShoe"]').attr('data-value');
+
                     var partNum = ['SOLEDYNAMIX-SPEC', 'SOLEDYNAMIX-PERF', 'SOLEDYNAMIX-COMF'];
                     var linkEnd = ['condition-specific', 'sport', 'comfort'];
                     var pageId  = [123, 124, 125];
 
-                    var iPartNum = partNum.indexOf( stockCodeToAddToBasket );
+                    var iPartNum = partNum.indexOf( sdPartNum );
 
                     var redirectLink = pageId[iPartNum] + '/sitename-result-' + linkEnd[iPartNum];
 
