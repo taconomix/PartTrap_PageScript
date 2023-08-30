@@ -1,12 +1,31 @@
-var h2MobileDiv = '<div id="h2Mobile" class="hidden" style="background: #0F0F0F;">';
-var h2MobileTxt = '<h2 style="color: #fff; text-align: center;">Your results are in!</h2><div>';
 
-$(h2MobileDiv + h2MobileTxt).insertAfter(".how-it-works-hero");
+// Remove video-headline class that borks the CSS
+$('.video-headline').removeClass('video-headline');
 
 
+// Set "results are in" message for mobile formats
+jQuery('<div>', {
+
+    id:    'h2Mobile',
+    class: 'hidden',
+    style: 'background: #0F0F0F; padding-top: 2px; padding-bottom: 3px;'
+
+}).insertAfter('.how-it-works-hero');
+
+
+jQuery('<h2>', {
+
+    style: 'color: #fff; text-align: center; margin: 0px;',
+    html:  'Your results are in!'
+
+}).appendTo('#h2Mobile');
+
+
+
+// Toggle visibility and Hero Image width on window Resize
 $(window).on('resize', function(e) { 
     
-    if ( $(window).width() < 1184 ) {
+    if ( $(window).width() <= 1184 ) {
 
         $('#resultImg').attr("style","width: 100%;");
         $('#h2Mobile').removeClass('hidden');
@@ -20,3 +39,4 @@ $(window).on('resize', function(e) {
 
 
 $(window).trigger('resize');
+
