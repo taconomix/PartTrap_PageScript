@@ -17,6 +17,7 @@ var path = {
     name: '/' + Math.random().toString(16).substring(2,15)
 };
 
+$('.add-config-to-cart').html('View your results');
 
 /*========================================================
     Condition selection "none" functionality
@@ -92,8 +93,13 @@ var path = {
 /*== CHANGE LOG ===============================================================
 
     2023/08/29: +Redirect to product landing pages after Cart add;
+    
     2023/08/30: +Update partnum selector in redirect;
                 +Add "None" condition option functionality;
+    
     2023/08/31: +Update redirect using path enum;
+                +Update .dx visibility changes for future Button change;
+                +Patch button visibility bug showing checkbox;
+                +Change span on add-to-cart button;
 
 =============================================================================*/
