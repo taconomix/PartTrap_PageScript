@@ -49,8 +49,7 @@ var path = {
         if ( isSpec == $('.noDx').is(':checked') ) 
             $('.noDx').click();
 
-        if ( isSpec ) $('.noDx').hide();
-        else $('.noDx').show();
+        $('.noDx').closest('.col-sm-3').attr('style', isSpec? 'display: none;': '');
     });
 
 
