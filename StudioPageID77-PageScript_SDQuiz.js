@@ -1,14 +1,22 @@
-/*== PageID=77 2023/08/30 ==============================================
+/*== PageID=77 2023/08/31 ==============================================
     
     Sole Dynamix Quiz Custom Page Script 
 
     Page ID:    ID=77
     Products:   SOLEDYNAMIX-PERF, SOLEDYNAMIX-COMF, SOLEDYNAMIX-SPEC
     
-    ChangeDate: 2023/08/30 -KV
+    ChangeDate: 2023/08/31 -KV
 ======================================================================*/
 
 var stkCodePath = '.config-selected-image-container [field-name="stockCodeShoe"]';
+
+var path = { 
+    site: window.location.origin + '/en/page/',
+    type: ['SPEC', 'PERF', 'COMF'], 
+    page: [123, 124, 125], 
+    name: '/' + Math.random().toString(16).substring(2,15)
+};
+
 
 /*========================================================
     Condition selection "none" functionality
@@ -22,12 +30,10 @@ var stkCodePath = '.config-selected-image-container [field-name="stockCodeShoe"]
     specDxBox.find('input[name="None"]').attr('class','noDx');
 
 
-
     //_ Clear "None" when any condition is selected
     $('.dx').on('click', function (e) { 
         if ( $(this).is(':checked') ) $('.noDx:checked').click(); 
     });
-
 
     //_ Clear conditions when "None" is selected
     $('.noDx').on('click', function (e) {
@@ -35,11 +41,10 @@ var stkCodePath = '.config-selected-image-container [field-name="stockCodeShoe"]
     });
 
 
-
     //_ Uncheck, hide noDx option for SPEC
-    $('.config-first-step-selection span').on('click', function (e) {
+    $('.config-selection-image-slider.Shoe.Style').find('a').on('click', function(e){
         
-        var isSpec = $(stkCodePath).attr('data-value').substring(12) == "SPEC";
+        var isSpec = $(this).find('input').attr('data-value').substring(12) == "SPEC";
 
         if ( isSpec == $('.noDx').is(':checked') ) 
             $('.noDx').click();
@@ -53,54 +58,34 @@ var stkCodePath = '.config-selected-image-container [field-name="stockCodeShoe"]
 
 /*========================================================
     Redirect to landing pages on Add-to-Cart
-        Changed 2023/08/30
-
-        --waiting for approval to enable
+        Changed 2023/08/31
 ========================================================*/
 
+    // Disable original add to cart function
+    $(document).off('click', '.add-config-to-cart'); 
 
-    $(document).off('click', '.add-config-to-cart'); // remove original click function
-
+    // Add Product & Config Data to cart, redirect to landing pages
     $(document).on('click', '.add-config-to-cart', function (e) {
-
-        // Get config data
-        var configData = selectedData.slice();
-        var deviceDescription = $(stkCodePath).attr('item-descrip');
         
         var data = {
-            stockCode: stockCodeToAddToBasket,
+            stockCode: $(stkCodePath).attr('data-value'),
             qty: 1,
-            ConfigurationItems: configData,
-            deviceCodeDescription: deviceDescription
+            ConfigurationItems: selectedData.slice(),
+            deviceCodeDescription: $(stkCodePath).attr('item-descrip')
         };
 
 
-        // Post to cart when no errors found
         $.post('/DienenConfiguratorAddToBasket/AddToBasket', data, function (result) {
 
-            if ( result ) {
+            if ( !result ) return;
+            
+            if ( !result.Success ) { alertify.error( result.Message );  return; }
 
-                if ( result.Success ) {
+            alertify.success( result.Message );
+            PT.Sections.Basket.miniBasket.UpdateMiniBasket();
 
-                    // Update basket
-                    alertify.success( result.Message );
-                    PT.Sections.Basket.miniBasket.UpdateMiniBasket();
-                    if ( isSavedConfig ) deleteSavedConfig();
-
-
-                    // Custom Redirect
-                    var type = ['SPEC', 'PERF', 'COMF'];
-                    var link = ['condition-specific', 'sport', 'comfort'];
-                    var page = [123, 124, 125];
-
-                    var _i = type.indexOf( $(stkCodePath).attr('data-value').substring(12) );
-
-                    window.location.href = window.location.origin + '/en/page/' + page[_i] + '/sitename-result-' + link[_i];
-
-                } else {
-                    alertify.error(result.Message);
-                }
-            }
+            var _i = path.type.indexOf( data.stockCode.substring(12) );
+            window.location.href = path.site + path.page[_i] + path.name;
         });
     });
 
@@ -110,5 +95,6 @@ var stkCodePath = '.config-selected-image-container [field-name="stockCodeShoe"]
     2023/08/29: +Redirect to product landing pages after Cart add;
     2023/08/30: +Update partnum selector in redirect;
                 +Add "None" condition option functionality;
+    2023/08/31: +Update redirect using path enum;
 
 =============================================================================*/
