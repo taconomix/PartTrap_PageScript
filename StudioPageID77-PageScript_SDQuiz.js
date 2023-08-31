@@ -100,7 +100,7 @@ $('.add-config-to-cart').html('View your results');
     Script Funcitons
 ========================================================*/
 
-    function = hrefToResultsPage ( desc, wait = 0 ) { 
+    function hrefToResultsPage ( desc, wait = 0 ) { 
 
         var i = path.type.indexOf( desc.substring(12) );
         var link = path.site + path.page[i] + path.name;
