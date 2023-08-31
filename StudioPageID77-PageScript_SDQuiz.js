@@ -19,6 +19,8 @@ var path = {
 
 $('.add-config-to-cart').html('View your results');
 
+
+
 /*========================================================
     Condition selection "none" functionality
         Changed 2023/08/30
@@ -45,7 +47,7 @@ $('.add-config-to-cart').html('View your results');
     //_ Uncheck, hide noDx option for SPEC
     $('.config-selection-image-slider.Shoe.Style').find('a').on('click', function(e){
         
-        var isSpec = $(this).find('input').attr('data-value').substring(12) == "SPEC";
+        var isSpec = $(this).find('input').attr('data-value') == "SOLEDYNAMIX-SPEC";
 
         if ( isSpec == $('.noDx').is(':checked') ) 
             $('.noDx').click();
@@ -79,15 +81,36 @@ $('.add-config-to-cart').html('View your results');
 
             if ( !result ) return;
             
-            if ( !result.Success ) { alertify.error( result.Message );  return; }
+            if ( !result.Success ) { 
+                alertify.error( result.Message );  
+                return; 
+            }
 
             alertify.success( result.Message );
             PT.Sections.Basket.miniBasket.UpdateMiniBasket();
 
-            var _i = path.type.indexOf( data.stockCode.substring(12) );
-            window.location.href = path.site + path.page[_i] + path.name;
+            hrefToResultsPage( data.stockCode, 1500 );
         });
     });
+
+
+
+
+/*========================================================
+    Script Funcitons
+========================================================*/
+
+    function = hrefToResultsPage ( desc, wait = 0 ) { 
+
+        var i = path.type.indexOf( desc.substring(12) );
+        var link = path.site + path.page[i] + path.name;
+        
+        setTimeout(function() { 
+            window.location.href = link; 
+        }, wait);
+    }
+
+
 
 
 /*== CHANGE LOG ===============================================================
@@ -101,5 +124,6 @@ $('.add-config-to-cart').html('View your results');
                 +Update .dx visibility changes for future Button change;
                 +Patch button visibility bug showing checkbox;
                 +Change span on add-to-cart button;
+                +Add setTimeout on redirect to let user see success alert;
 
 =============================================================================*/
