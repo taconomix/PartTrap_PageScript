@@ -4,7 +4,7 @@
 	Page ID:    ID=72
 	Products:   AFO-CONF1
 	
-	ChangeDate: 2023/04/24 -KV
+	ChangeDate: 2023/09/21 -KV
 ==========================================================================================*/
 
 /*========================================================
@@ -179,12 +179,10 @@
 		Added 2022/11/23
 ========================================================*/
 	var modFN = 'input[field-name="ModType_c"]';
+
 	$(modFN).on('change', function () {
-		if ($(this).attr("data-value") == "M") {
-			$('.Mod.Notes').removeClass('show-mod-notes');
-		} else {
+
 			$('.Mod.Notes').addClass('show-mod-notes');
-		}
 	});
 
 
@@ -746,29 +744,43 @@
 
 /*== CHANGE LOG =================================================================================
 	
-	2022/11/23: BugFix: ModNotes visibility rules reversed;
+	2023/09/21: 
+		+Always show ModNotes;
 
-	2022/12/15: +Right-side measurements fields, handle changes;
+	2023/08/24: 
+		+Add Shoe Selection & Cart-add capability;
 
-	2022/12/21: +ToeWalker visibility rules;
+	2023/04/24: 
+		+prepAllow to include users stmetzger & ecogswell
 
-	2023/02/28: +Hide kPrepped except for TOP/SURESTEP;
-				+PartTrap UserID => OrderDtl.PTUserEmail_c; -KV
+	2023/04/13: 
+		+TOP allow CFab devices again (undo above)
 
-	2023/03/17: +DeviceCode filters for non-CFab Customers;
-				+Global vars for UserID, CustID; +Global arrays for Allow Prep/CFab Users;
+	2023/04/10: 
+		+Validate that any measurement is selected; -rm all users/custs from CFab;
 
-	2023/03/22: BugFix: Measurements were being bypassed;
-				+kHeelCut alert to select Inner Boot;
-				
-	2023/03/29: +Friddles Input, visibility rules, cPattern_c override;
+	2023/03/29: 
+		+Friddles Input, visibility rules, cPattern_c override;
 
-	2023/04/10: +Validate that any measurement is selected; -rm all users/custs from CFab;
+	2023/03/22: 
+		+BugFix: Measurements were being bypassed;
+		+kHeelCut alert to select Inner Boot;
 
-	2023/04/13: +TOP allow CFab devices again (undo above)
+	2023/03/17: 
+		+DeviceCode filters for non-CFab Customers;
+		+Global vars for UserID, CustID; +Global arrays for Allow Prep/CFab Users;
 
-	2023/04/24: +prepAllow to include users stmetzger & ecogswell
+	2023/02/28: 
+		+Hide kPrepped except for TOP/SURESTEP;
+		+PartTrap UserID => OrderDtl.PTUserEmail_c; -KV
 
-	2023/08/24: +Add Shoe Selection & Cart-add capability;
+	2022/12/21: 
+		+ToeWalker visibility rules;
+
+	2022/12/15: 
+		+Right-side measurements fields, handle changes;
+
+	2022/11/23: 
+		+BugFix: ModNotes visibility rules reversed;
 
 =========================================the meetings will continue until morale improves======*/

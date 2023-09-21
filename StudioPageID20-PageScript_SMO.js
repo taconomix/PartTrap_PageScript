@@ -4,7 +4,7 @@
 	Page ID:	ID=20
 	Products:   SMO-CONF1 (surestep), SMO-CONF2 (bigshot), SMO-CONF3 (trad)
 	
-	Changed: 2023/08/24 -KV
+	Changed: 2023/09/21 -KV
 ============================================================================*/
 
 /*========================================================
@@ -252,17 +252,9 @@
 ========================================================*/
 	var modFN = 'input[field-name="ModType_c"]';
 
-
 	$(modFN).on('change', function () {
 
-		if ($(this).attr("data-value") == "M") {
-
-			$('.Mod.Notes').removeClass('show-mod-notes');
-
-		} else {
-
-			$('.Mod.Notes').addClass('show-mod-notes');
-		}
+		$('.Mod.Notes').addClass('show-mod-notes');
 	});
 
 
@@ -399,72 +391,72 @@
 	var shoePartNum = '';
 
 
-// Toggle visibility when Meas6 changes
-$(document).on('change', '[validate-field="dMeas6_c"]' , function (e) { 
-	
-	meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() );
-	
-	if ( isNaN(meas6val) ) 
-		return;
+	// Toggle visibility when Meas6 changes
+	$(document).on('change', '[validate-field="dMeas6_c"]' , function (e) { 
+		
+		meas6val = parseFloat( $('[validate-field="dMeas6_c"]').val() );
+		
+		if ( isNaN(meas6val) ) 
+			return;
 
-	if ( meas6val > 6.25 || meas6val < 2.75 )
-		$('div.shoeType').hide();
-	else 
-		$('div.shoeType').show();
-}); 
+		if ( meas6val > 6.25 || meas6val < 2.75 )
+			$('div.shoeType').hide();
+		else 
+			$('div.shoeType').show();
+	}); 
 
 
 
-// Set visible size options, get part number when type is selected
-$(document).on('click', 'div.shoeType > .config-image-list', function (e) {
-	
-	// Get Product PartNum prefix for selected shoe
-	ShoeProd = $('.shoeType').find('.config-selected-image-container').children().attr('data-value'); 
-	
-	// Re-set size to "" when new color is clicked
-	$('.shoeSizes option').prop('selected', function() {
-    	return this.defaultSelected;
+	// Set visible size options, get part number when type is selected
+	$(document).on('click', 'div.shoeType > .config-image-list', function (e) {
+		
+		// Get Product PartNum prefix for selected shoe
+		ShoeProd = $('.shoeType').find('.config-selected-image-container').children().attr('data-value'); 
+		
+		// Re-set size to "" when new color is clicked
+		$('.shoeSizes option').prop('selected', function() {
+	    	return this.defaultSelected;
+		});
+
+		// Get Sizing, Availability, hide out of stock, get part number
+		makeMagic(ShoeProd);
 	});
 
-	// Get Sizing, Availability, hide out of stock, get part number
-	makeMagic(ShoeProd);
-});
 
 
+	// Get Size, show Add To Cart Button
+	$(document).on('change', 'div.shoeSizes', function(){
+		
+		// Get the selected shoe size value from dropdown
+		ShoeSize = $('div.shoeSizes :selected').attr('data-value'); 
 
-// Get Size, show Add To Cart Button
-$(document).on('change', 'div.shoeSizes', function(){
-	
-	// Get the selected shoe size value from dropdown
-	ShoeSize = $('div.shoeSizes :selected').attr('data-value'); 
+		if (ShoeSize == 'None' || ShoeSize == 0) 
+			return;
 
-	if (ShoeSize == 'None' || ShoeSize == 0) 
-		return;
-
-	shoePartNum = getShoePartNum(ShoeProd, ShoeSize);
-	
-	// Only show Cart button when PartNum is valid
-	$('.col-sm-6.button').show(); 
-	
-});
-
-
-// Button Hover styling
-$('.add-shoe-to-cart').hover(function() {
-
-	$('.add-shoe-to-cart').css({'background': '#4c5966', 'border-color': '#4c5966'});
-	}, function() {
-		$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor});
-	}
-);
+		shoePartNum = getShoePartNum(ShoeProd, ShoeSize);
+		
+		// Only show Cart button when PartNum is valid
+		$('.col-sm-6.button').show(); 
+		
+	});
 
 
-// Add Shoes to cart
-$(document).on('click', '.col-sm-6.button', function (e) {
+	// Button Hover styling
+	$('.add-shoe-to-cart').hover(function() {
 
-	addExtrasToCart( shoePartNum );
+		$('.add-shoe-to-cart').css({'background': '#4c5966', 'border-color': '#4c5966'});
+		}, function() {
+			$('.add-shoe-to-cart').css({'background': shoeCartButtonColor, 'border-color': shoeCartButtonColor});
+		}
+	);
 
-});
+
+	// Add Shoes to cart
+	$(document).on('click', '.col-sm-6.button', function (e) {
+
+		addExtrasToCart( shoePartNum );
+
+	});
 
 /*========================================================
 	Functions referenced above.
@@ -729,38 +721,42 @@ $(document).on('click', '.col-sm-6.button', function (e) {
 
 /*== CHANGE LOG =================================================================================
 
-	2022/11/21: BugFix: No data was saving/sending for dMeas12, dMeas13;
+	2023/09/21: +ModNotes always visible;
 
-	2022/11/23: BugFix: ModNotes visibility rules reversed;
-
-	2022/12/08: +Enabling Left/Right Separate Measurements;
-
-	2022/12/12: +Hide right-measurements unless kSplit selected;
-				+populate dual measurements loading saved config;
-				Refactor validate-fields in function, move from $(document).ready();
-
-	2022/12/14: +Function to copy right-vals to blank left-vals when applicable;
-				BugFix: ModType_c References;
-
-	2023/02/28: +Hide Prepped Option except for TOP/SURESTEP;
-				+PartTrap UserID => OrderDtl.PTUserEmail_c;
-
-	2023/03/22: BugFix: Can no longer bypass Measurements; 
-
-	2023/03/23: +kHeelCut/Select Inner Boot alert;
-
-	2023/03/29: +Friddles Pattern combo, visibility handling;
-
-	2023/04/10: +Validate that any measurement is selected; -rm all users/custs from CFab;
-
-	2023/04/24: +prepAllow to include users stmetzger & ecogswell
-
-	2023/06/19: +CSS changes for Add to Cart button;
-
-	2023/08/10: +CSS Style change for Alertify.Error;
+	2023/08/24: +Adjust Shoe Cart Button CSS;
 
 	2023/08/17: +Add Shoe Selection & Cart-add capability;
 
-	2023/08/24: +Adjust Shoe Cart Button CSS;
+	2023/08/10: +CSS Style change for Alertify.Error;
+
+	2023/06/19: +CSS changes for Add to Cart button;
+
+	2023/04/24: +prepAllow to include users stmetzger & ecogswell
+	
+	2023/04/10: +Validate that any measurement is selected; -rm all users/custs from CFab;
+	
+	2023/03/29: +Friddles Pattern combo, visibility handling;
+	
+	2023/03/23: +kHeelCut/Select Inner Boot alert;
+	
+	2023/03/22: BugFix: Can no longer bypass Measurements; 
+
+	2023/02/28: +Hide Prepped Option except for TOP/SURESTEP;
+				+PartTrap UserID => OrderDtl.PTUserEmail_c;
+	
+	2022/12/14: +Function to copy right-vals to blank left-vals when applicable;
+				BugFix: ModType_c References;
+	
+	2022/12/12: +Hide right-measurements unless kSplit selected;
+				+populate dual measurements loading saved config;
+				Refactor validate-fields in function, move from $(document).ready();
+	
+	2022/12/08: +Enabling Left/Right Separate Measurements;
+	
+	2022/11/23: BugFix: ModNotes visibility rules reversed;
+	
+	2022/11/21: BugFix: No data was saving/sending for dMeas12, dMeas13;
+
+
 	
 =========================================the meetings will continue until morale improves======*/
