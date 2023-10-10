@@ -12,21 +12,22 @@
 		Added 2022/11/08
 ========================================================*/
 	var sStyle = `
-	/* Custom Style Sheet from PartTrap Studio PageScript */
+		/* Custom Style Sheet from PartTrap Studio PageScript */
 
-	.config-selection-radio.Brand {
-		display:none;
-	}
+		.config-selection-radio.Brand {
 
-	.alertify-log-error {
-				background: #4c5966;
-				color: #FFFFFF
-	}`;
+			display:none;
+		}
 
-	var css = document.createElement("style");
-	css.type = "text/css";
-	css.innerHTML = sStyle;
-	document.head.appendChild(css);
+		.alertify-log-error {
+					background: #4c5966;
+					color: #FFFFFF
+		}`;
+
+		var css = document.createElement("style");
+		css.type = "text/css";
+		css.innerHTML = sStyle;
+		document.head.appendChild(css);
 
 
 
@@ -52,7 +53,9 @@
 			Added 2022/12/13
 	===================================================*/
 	$(document).ready(function() {
+
 		if (isSavedConfig) {
+
 			$('.measurement-value-container').find('.measurement-validate-input').trigger('change');
 			var hasRtMeas = false;
 			for (var i = 1; i <= 13; i++) {
@@ -81,12 +84,15 @@
 
 
 
+
 /*========================================================
 	Add 'Adjustment' classes to Heel/Ankle/FF Adj Fields
 		Added 2022/11/08
 ========================================================*/
+
 	$('.Heel.Correction, .Ankle.Correction').addClass('Adjustment');
 	$('.Forefoot.Correction').addClass('Adjustment Heel');
+
 
 
 
@@ -94,6 +100,7 @@
 	Select Inner Boot Alert on kHeelCut
 		added 2023/03/23
 ========================================================*/
+
 	$(document).on('click', '[field-name="kHeelCut_c"]', function (e) {
 
 		if ( $(this).is(':checked') ) {
@@ -106,11 +113,15 @@
 
 
 
+
+
 /*========================================================
 	Alternate Patterns
 		Added 2023/03/29
 ========================================================*/
+
 	$('div.bAltPattern').hide();
+
 
 	$(document).on('click', '.config-selection-image-slider.Pattern a', function (e) {
 
@@ -123,6 +134,7 @@
 
 		validateRequiredImages($('.Pattern.row'));
 	});
+
 
 	$(document).on('change', '.bAltPattern', function (e) {
 
@@ -137,10 +149,13 @@
 
 
 
+
+
 /*========================================================
 	Disable "Add To Cart" if DeviceType not valid
 		Added 2022/11/08
 ========================================================*/
+
 	$(document).on('mouseenter touch', '.order-notes-container', function (e) {
 		validateRequiredImages($('.Device.Type.AFO'));
 		validateRequiredImages($('.Pattern.row'));
@@ -154,10 +169,13 @@
 
 
 
+
+
 /*========================================================
 	Get values + send data for right side Measurements
 		Changed 2022/12/13
 ========================================================*/
+
 	$(document).on('change', '[validate-field="dMeas1r_c"]',  function(e) { validRightMeas(1); });
 	$(document).on('change', '[validate-field="dMeas2r_c"]',  function(e) { validRightMeas(2); });
 	$(document).on('change', '[validate-field="dMeas3r_c"]',  function(e) { validRightMeas(3); });
@@ -174,16 +192,37 @@
 
 
 
+
+
 /*========================================================
 	Correct visibility rules for ModNotes
 		Added 2022/11/23
 ========================================================*/
+	
 	var modFN = 'input[field-name="ModType_c"]';
 
 	$(modFN).on('change', function () {
 
 			$('.Mod.Notes').addClass('show-mod-notes');
+
 	});
+
+
+
+
+/*========================================================
+	Hide|Show Adjustment Degree input when not needed
+		Added 2023/10/10
+========================================================*/
+
+	$(document).on('change', 'input[field-name="cAnkleMods_c"]', function () {
+
+	    if ( $(this).attr('data-value') )
+	        $('.Adjustment.row').hide();
+	    else 
+	    	$('.Adjustment.row').show();
+	});
+
 
 
 
@@ -191,8 +230,10 @@
 	Set visibility rules for Separate Left/Right Meas
 		Changed 2022/12/13
 ========================================================*/
+
 	var msBox1st = [1,4,6,12];
 	var msBoxLbl = ['Circumferences','Widths','Lengths','Finish Height'];
+
 
 	$('input[field-name="cSBLR_c"]').on('change', function () { //v1
 		var splitBox = $('[name="kSplit"]').parents('div.config-selection-container');
@@ -205,7 +246,10 @@
 		}
 	});
 
+
+
 	$(document).on('click', '[name="kSplit"]', function (e) {
+
 		var rms = '.RightMs .measurement-input';
 		var buttonSpan = $(this).parents('label').children('span');
 		if ( buttonSpan[0].textContent.includes("Click") ) flipRightMeas(); 
@@ -509,7 +553,10 @@
 	}
 
 
-	function flipRightMeas() { // Swap image position on Right Meas Boxes
+
+	// Swap image position on Right Meas Boxes
+
+	function flipRightMeas() { 
 		for (var i = 0; i < msBox1st.length; i++) {
 			var fN = '[field-name="dMeas' + msBox1st[i] + 'r_c"]';
 			$(fN).parents('div.col-sm-12').children().first().insertAfter($(fN).parents('div.col-sm-6'));
@@ -517,7 +564,11 @@
 	}
 
 
-	function toggleMeasBoxes(sType = 'equal') { // Show|Hide right, change labels for all meas boxes for split
+
+	// Show|Hide right, change labels for all meas boxes for split
+
+	function toggleMeasBoxes(sType = 'equal') { 
+
 		var NotValClass = ( $(modFN+':checked').attr("data-value") == "M" )? "not-valid": "valid-not-valid";
 
 		for (var i = 0; i < msBox1st.length; i++) {
@@ -537,7 +588,10 @@
 	}
 
 
-	function validRightMeas(msNum) { // Trigger changes to save+send data. Adapted from PartTrap's AFO <script>.   
+
+	// Trigger changes to save+send data. Adapted from PartTrap's AFO <script>.   
+
+	function validRightMeas(msNum) { 
 		var NotValClass = ( $(modFN+':checked').attr("data-value") == "M" ) ? "not-valid" : "valid-not-valid";
 		var fName = '[field-name="dMeas' + msNum + 'r_c"]';
 		var fVal = parseFloat( $('[validate-field="dMeas' + msNum + 'r_c"]').val() );
