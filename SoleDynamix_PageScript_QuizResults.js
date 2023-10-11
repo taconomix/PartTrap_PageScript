@@ -1,3 +1,4 @@
+// Fixed mobile format issue on page 126
 // Remove video-headline class that borks the CSS
 $('.video-headline').removeClass('video-headline');
 
