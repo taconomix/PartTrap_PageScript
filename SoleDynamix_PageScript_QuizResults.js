@@ -47,6 +47,28 @@ $(window).on('resize', function(e) {
         $('#resultImg').attr("style","width: 70%;");
         $('#h2Mobile').addClass('hidden');
     }
+    
+    if ($(window).width() > 767) {
+		// Add left and right padding to the top two secions
+		$('#section_643').css({'padding-left': '200px', 'padding-right': '200px'});
+		$('#section_639').css({'padding-left': '50px', 'padding-right': '50px'});
+		// Change the size of the middle sections and their images
+		$('#section_640').find('img').css({'object-fit': 'contain'});
+		$('#section_641').find('img').css({'object-fit': 'contain'});
+		$('#section_642').find('img').css({'object-fit': 'contain'});
+		$('#section_640').find('div.gray-bg').css({'min-height': '300px', 'max-height': '500px'});
+		$('#section_641').find('div.half-image-container-w').css({'min-height': '300px', 'max-height': '500px'});
+		$('#section_642').find('div.gray-bg').css({'min-height': '300px', 'max-height': '550px'});
+	} else {
+		$('#section_643').removeAttr('style');
+		$('#section_639').removeAttr('style');
+		$('#section_640').find('img').removeAttr('style');
+		$('#section_641').find('img').removeAttr('style');
+		$('#section_642').find('img').removeAttr('style');
+		$('#section_640').find('div.gray-bg').removeAttr('style');
+		$('#section_641').find('div.half-image-container-w').removeAttr('style');
+		$('#section_642').find('div.gray-bg').removeAttr('style');
+	}
 });
 
 
