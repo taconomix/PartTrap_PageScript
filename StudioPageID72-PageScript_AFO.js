@@ -1,10 +1,10 @@
-/*== PageID=72 2023/04/24 ==================================================================
+/*== PageID=72 AFO-CONF1 ===================================================================
 	Custom Page Script 
 
 	Page ID:    ID=72
 	Products:   AFO-CONF1
 	
-	ChangeDate: 2023/09/21 -KV
+	ChangeDate: 2023/10/26 -KV
 ==========================================================================================*/
 
 /*========================================================
@@ -33,13 +33,13 @@
 
 /*========================================================
 	Customer-Specific Option Changes
-		Changed 2023/04/24
+		Changed 2023/10/26
 ========================================================*/
 	var modPrep = 'input[field-name="kPrepped_c"]';
 	var myCust  = $(document.body).attr("data-customer");
 	var myUser  = document.getElementById("CurrentUserName").value;
-	var cfCusts = ["Asviray","MID46635", "SURESTEP", "davidt", "erics2","HANGER"];
-	var prepAllow = ['HANGER','MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
+	var cfCusts = ["Asviray","MID46635", "SURESTEP", "davidt", "HANGER", "LUM46804"];
+	var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	
 	if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
