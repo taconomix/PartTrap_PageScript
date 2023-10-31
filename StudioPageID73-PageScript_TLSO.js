@@ -1,10 +1,9 @@
-/*== PageID=73 2023/04/24 ==================================================================
+/*== PageID=73 2023/10/31 ==================================================================
+    
     Custom Page Script
     
     Page ID:    ID=73
     Products:   TLSO-CONF1
-    
-    ChangeDate: 2023/04/24 -KV
 ==========================================================================================*/
 
 
@@ -102,18 +101,22 @@
 
 
 
+
 /*========================================================
     Customer-Specific Option Changes
-        Added 2023/04/24
+        Changed 2023/10/31
 ========================================================*/
     var modPrep = 'input[field-name="kPrepped_c"]';
     var myCust  = $(document.body).attr("data-customer");
     var myUser  = document.getElementById("CurrentUserName").value;
-    var prepAllow = ['HANGER','MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
+    var cfCusts = ["Asviray","MID46635", "SURESTEP", "davidt", "HANGER", "LUM46804"];
+    var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
-    if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
+    
+    var isPrepCust = prepAllow.indexOf(myCust) >= 0 && prepAllow.indexOf(myUser) >= 0;
+
+    if ( !isPrepCust ) 
         $(modPrep).parents('div.config-selection-radio').hide();
-    }
 
 
 
@@ -121,10 +124,26 @@
     Correct visibility rules for ModNotes
         Added 2022/11/23
 ========================================================*/
+    var modFN = 'input[field-name="ModType_c"]';
 
-    $('input[field-name="ModType_c"]').on('change', function () {
+    $(modFN).on('change', function () {
+
+        
         $('.Mod.Notes').addClass('show-mod-notes');
+
+
+        // Warning to reference ordernum, added 2023/10/31
+        var castAlert = 'Fabrication from cast selected.\n\nWhen shipping casts, please send a copy of the O-Form you receive in the confirmation email.\n\nCasts received without this O-Form may cause fabrication issues.';
+        var scanAlert = 'Fabrication from scan selected.\n\nWhen sending scans, please reference the order number you receive in the confirmation email.\n\nScans received without an order number may cause delays in fabrication.';
+
+        if ( $(this).attr("data-value") == "C" )
+            alert( castAlert );
+
+        if ( $(this).attr("data-value") == "S" )
+            alert( scanAlert );
     });
+
+
 
 
 /*========================================================
@@ -227,6 +246,80 @@
     Validate measurements to send data to Epicor. 
         Added 2022/12/02
 ========================================================*/
+
+    var tlso_ms = [ 'dWaistAxlaLEN_c', 'dScapWaistLEN_c', 'dTrochWaistLEN_c', 'dWaistStrnmLEN_c', 
+        'dWaistSympLEN_c', 'dSympAsisLEN_c', 'dCRCatAxla_c', 'dCRCatNipLn_c', 'dCRCatXyphd_c', 
+        'dCRCatLowRib_c', 'dCRCatWaist_c', 'dCRCatTroch_c', 'dMLatAxla_c', 'dMLatNipLn_c', 'dMLatXyphd_c', 
+        'dMLatLowRib_c', 'dMLatWaist_c', 'dMLatTroch_c', 'dAPatAxla_c', 'dAPatNipLn_c' ];
+
+    $(document).on('change', '[validate-field="'+tlso_ms[0] +'"]', function (e) { onMeasChange( tlso_ms[0] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[1] +'"]', function (e) { onMeasChange( tlso_ms[1] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[2] +'"]', function (e) { onMeasChange( tlso_ms[2] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[3] +'"]', function (e) { onMeasChange( tlso_ms[3] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[4] +'"]', function (e) { onMeasChange( tlso_ms[4] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[5] +'"]', function (e) { onMeasChange( tlso_ms[5] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[6] +'"]', function (e) { onMeasChange( tlso_ms[6] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[7] +'"]', function (e) { onMeasChange( tlso_ms[7] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[8] +'"]', function (e) { onMeasChange( tlso_ms[8] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[9] +'"]', function (e) { onMeasChange( tlso_ms[9] ); });
+    $(document).on('change', '[validate-field="'+tlso_ms[10]+'"]', function (e) { onMeasChange( tlso_ms[10]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[11]+'"]', function (e) { onMeasChange( tlso_ms[11]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[12]+'"]', function (e) { onMeasChange( tlso_ms[12]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[13]+'"]', function (e) { onMeasChange( tlso_ms[13]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[14]+'"]', function (e) { onMeasChange( tlso_ms[14]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[15]+'"]', function (e) { onMeasChange( tlso_ms[15]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[16]+'"]', function (e) { onMeasChange( tlso_ms[16]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[17]+'"]', function (e) { onMeasChange( tlso_ms[17]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[18]+'"]', function (e) { onMeasChange( tlso_ms[18]); });
+    $(document).on('change', '[validate-field="'+tlso_ms[19]+'"]', function (e) { onMeasChange( tlso_ms[19]); });
+
+
+
+// Functions ________________________________________
+
+    function onMeasChange ( measField ) {
+
+        var dvField  = '[field-name="' + measField + '"]';
+        var fieldVal = (parseFloat($('[validate-field="' + measField + '"]').val()));
+        var NotValidClassName = "valid-not-valid";
+
+        $(dvField).val(fieldVal);
+        $(dvField).attr("data-value", fieldVal);
+        $(dvField).trigger("change");
+        //$(dvField).val(fieldVal).attr("data-value", fieldVal).trigger("change");
+
+        if (!isNaN(fieldVal)) {
+            $(dvField).removeClass(NotValidClassName);
+            $(dvField).closest('.measurement-value-container').find('.measurment-inches-values').removeClass(NotValidClassName);
+        } else {
+            $(dvField).addClass(NotValidClassName);
+            $(dvField).closest('.measurement-value-container').find('.measurment-inches-values').addClass(NotValidClassName);
+        } 
+    }
+
+
+
+
+/*== CHANGE LOG =================================================================================
+    
+    11/23/2022: ModNotes visibility rules reversed. Issue Corrected. 
+    11/28/2022: Add rules for opening type button radio set.
+    12/02/2022: Add rules to Bivalve click for Softee TLSO. Updated drFixData method.
+    12/04/2022: Add same code from SMO config 12/13 measurements to get it to send data.
+    2023/02/28: Hide Prepped Option except for TOP/SURESTEP;
+    2023/02/28: Add PartTrap UserID to OrderDtl.PTUserEmail_c; -KV
+    2023/04/24: +prepAllow to include users stmetzger & ecogswell
+    2023/07/05: +move measurement validation to Function onMeasChange
+    
+===============================================================================================*/
+
+
+
+    /*========================================================
+      Validate measurements to send data to Epicor. 
+        Added 2022/12/02
+        Removed 2023/07/06?
+    ==========================================================
 
     var tlso_ms01 = 'dWaistAxlaLEN_c';
     var tlso_ms02 = 'dScapWaistLEN_c';
@@ -651,31 +744,31 @@
             $(dvField).addClass(NotValidClassName);
             $(dvField).closest('.measurement-value-container').find('.measurment-inches-values').addClass(NotValidClassName);
         } 
-    });
+    }); 
 
-
-
-
-
-
-
-
-
-
-/*== CHANGE LOG =================================================================================
     
-    11/23/2022: ModNotes visibility rules reversed. Issue Corrected. 
-    11/28/2022: Add rules for opening type button radio set.
-    12/02/2022: Add rules to Bivalve click for Softee TLSO. Updated drFixData method.
-    12/04/2022: Add same code from SMO config 12/13 measurements to get it to send data.
-    2023/02/28: Hide Prepped Option except for TOP/SURESTEP;
-    2023/02/28: Add PartTrap UserID to OrderDtl.PTUserEmail_c; -KV
-    2023/04/24: +prepAllow to include users stmetzger & ecogswell
-    
-===============================================================================================*/
+    // Original replacement for above, using functions - never used
 
-
-
+    $(document).on('change', '[validate-field="'+tlso_ms01+'"]', function (e) { onMeasChange( tlso_ms01 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms02+'"]', function (e) { onMeasChange( tlso_ms02 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms03+'"]', function (e) { onMeasChange( tlso_ms03 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms04+'"]', function (e) { onMeasChange( tlso_ms04 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms05+'"]', function (e) { onMeasChange( tlso_ms05 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms06+'"]', function (e) { onMeasChange( tlso_ms06 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms07+'"]', function (e) { onMeasChange( tlso_ms07 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms08+'"]', function (e) { onMeasChange( tlso_ms08 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms09+'"]', function (e) { onMeasChange( tlso_ms09 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms10+'"]', function (e) { onMeasChange( tlso_ms10 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms11+'"]', function (e) { onMeasChange( tlso_ms11 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms12+'"]', function (e) { onMeasChange( tlso_ms12 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms13+'"]', function (e) { onMeasChange( tlso_ms13 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms14+'"]', function (e) { onMeasChange( tlso_ms14 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms15+'"]', function (e) { onMeasChange( tlso_ms15 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms16+'"]', function (e) { onMeasChange( tlso_ms16 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms17+'"]', function (e) { onMeasChange( tlso_ms17 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms18+'"]', function (e) { onMeasChange( tlso_ms18 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms19+'"]', function (e) { onMeasChange( tlso_ms19 ); });
+    $(document).on('change', '[validate-field="'+tlso_ms20+'"]', function (e) { onMeasChange( tlso_ms20 ); });*/
 
 
     /*========================================================
