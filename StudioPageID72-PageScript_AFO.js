@@ -43,7 +43,7 @@
 	var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	
-	var isPrepCust = prepAllow.indexOf(myCust) >= 0 && prepAllow.indexOf(myUser) >= 0;
+	var isPrepCust = prepAllow.indexOf(myCust) >= 0 || prepAllow.indexOf(myUser) >= 0;
 
 	if ( !isPrepCust ) 
 		$(modPrep).parents('div.config-selection-radio').hide();
@@ -120,20 +120,16 @@
 /*========================================================
 	Cast Warning
 		added 2023/10/31
-========================================================*/
+========================================================
 	$('input[field-name="ModType_c"]').on('change', function () {
 
 			if ( $(this).attr("data-value") != "M" )
 				alert('To ensure casts are processed correctly, please send a copy of the O-Form attached to your confirmation email when shipping casts.');
 
 	});
+*/
 
 
-/*
-'Fabrication from cast selected.\n\nWhen shipping casts, please reference the order number you receive in the confirmation email.\n\nCasts received without an order number may cause fabrication issues, as they cannot be linked to existing orders.'
-
-CAST Selected - To ensure casts are matched with this order, please send a copy of the O-Form attached to your confirmation email when shipping casts.
-To ensure casts are processed correctly, please send a copy of the O-Form attached to your confirmation email when shipping casts.
 
 
 /*========================================================
