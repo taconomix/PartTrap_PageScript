@@ -123,7 +123,7 @@
 	var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	
-	var isPrepCust = prepAllow.indexOf(myCust) >= 0 && prepAllow.indexOf(myUser) >= 0;
+	var isPrepCust = prepAllow.indexOf(myCust) >= 0 || prepAllow.indexOf(myUser) >= 0;
 
 	if ( !isPrepCust ) 
 		$(modPrep).parents('div.config-selection-radio').hide();
