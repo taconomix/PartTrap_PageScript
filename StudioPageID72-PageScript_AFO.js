@@ -1,11 +1,12 @@
-/*== PageID=72 AFO-CONF1 ===================================================================
+/*== PageID=72 2023/10/31 =================================================================
 	Custom Page Script 
 
 	Page ID:    ID=72
 	Products:   AFO-CONF1
 	
-	ChangeDate: 2023/10/26 -KV
 ==========================================================================================*/
+
+
 
 /*========================================================
 	Add class to hide Brand radio button.
@@ -42,9 +43,11 @@
 	var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
 	
-	if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
+	var isPrepCust = prepAllow.indexOf(myCust) >= 0 || prepAllow.indexOf(myUser) >= 0;
+
+	if ( !isPrepCust ) 
 		$(modPrep).parents('div.config-selection-radio').hide();
-	}
+
 
 
 
@@ -114,10 +117,24 @@
 
 
 
+/*========================================================
+	Cast Warning
+		added 2023/10/31
+========================================================
+	$('input[field-name="ModType_c"]').on('change', function () {
+
+			if ( $(this).attr("data-value") != "M" )
+				alert('To ensure casts are processed correctly, please send a copy of the O-Form attached to your confirmation email when shipping casts.');
+
+	});
+*/
+
+
+
 
 /*========================================================
 	Alternate Patterns
-		Added 2023/03/29
+		Changed 2023/10/31
 ========================================================*/
 
 	$('div.bAltPattern').hide();
@@ -125,10 +142,17 @@
 
 	$(document).on('click', '.config-selection-image-slider.Pattern a', function (e) {
 
-		if (  $('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value') == "MATERIALS" ) {
-			if (myCust == "MID46635" || myCust == "HANGER") $('div.bAltPattern').show();
+		$('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('id','myPattern');
+		
+		var selectedOther = $('#myPattern').attr('data-value') == "MATERIALS";
+
+		if (  selectedOther && isPrepCust ) {
+			
+			$('div.bAltPattern').show();
 			$('div.bAltPattern').trigger('change');
+
 		} else {
+
 			$('div.bAltPattern').hide();
 		}
 
@@ -136,15 +160,15 @@
 	});
 
 
+
 	$(document).on('change', '.bAltPattern', function (e) {
 
-		var frPtrn = $('div.bAltPattern :selected');
-		if ( frPtrn.attr('value') ) {
-			$('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value', frPtrn.attr('data-value'));
-			addToSummary("Pattern", frPtrn.attr('data-value'), 'cPattern_c');
-		} else {
-			addToSummary("Pattern", "MATERIALS", 'cPattern_c');
-		}
+		var altPattern = $('div.bAltPattern :selected');
+
+		var altPatternPN = altPattern.attr('value')? altPattern.attr('data-value'): "MATERIALS";
+
+		addToSummary("Pattern", altPatternPN, 'cPattern_c');
+		
 	});
 
 
@@ -157,14 +181,15 @@
 ========================================================*/
 
 	$(document).on('mouseenter touch', '.order-notes-container', function (e) {
+		
 		validateRequiredImages($('.Device.Type.AFO'));
 		validateRequiredImages($('.Pattern.row'));
 
-		if ($('.Device.Type.AFO').hasClass('not-valid') || $('.Pattern.row').hasClass('not-valid')) {
-			$('.add-config-to-cart').attr('disabled', true)
-		} else {
-			$('.add-config-to-cart').attr('disabled', false)
-		}
+		var missingPattern = $('.Pattern.row').hasClass('not-valid');
+		var missingType = $('.Device.Type.AFO').hasClass('not-valid');
+
+		$('.add-config-to-cart').attr('disabled', (missingPattern || missingType) )		
+
 	});
 
 
@@ -203,7 +228,19 @@
 
 	$(modFN).on('change', function () {
 
-			$('.Mod.Notes').addClass('show-mod-notes');
+		
+		$('.Mod.Notes').addClass('show-mod-notes');
+
+
+		// Warning to reference ordernum, added 2023/10/31
+		var castAlert = 'Fabrication from cast selected.\n\nWhen shipping casts, please send a copy of the O-Form you receive in the confirmation email.\n\nCasts received without this O-Form may cause fabrication issues.';
+		var scanAlert = 'Fabrication from scan selected.\n\nWhen sending scans, please reference the order number you receive in the confirmation email.\n\nScans received without an order number may cause delays in fabrication.';
+
+		if ( $(this).attr("data-value") == "C" )
+			alert( castAlert );
+
+		if ( $(this).attr("data-value") == "S" )
+			alert( scanAlert );
 
 	});
 

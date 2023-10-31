@@ -1,10 +1,10 @@
-/*== PageID=20 2023/08/24 ====================================================
+/*== PageID=20 2023/10/31 ====================================================
 	Custom Page Script 
 	
 	Page ID:	ID=20
 	Products:   SMO-CONF1 (surestep), SMO-CONF2 (bigshot), SMO-CONF3 (trad)
 	
-	Changed: 2023/09/21 -KV
+	Changed: 2023/10/31 -KV
 ============================================================================*/
 
 /*========================================================
@@ -110,59 +110,63 @@
 
 
 
+
+
 /*========================================================
 	Customer-Specific Option Changes
-		Changed 2023/04/24
-		--Added HANGER to prepAllow until we add users
+		Changed 2023/10/31
 ========================================================*/
 	var modPrep = 'input[field-name="kPrepped_c"]';
 	var myCust  = $(document.body).attr("data-customer");
 	var myUser  = document.getElementById("CurrentUserName").value;
-	var prepAllow = ['MID46635', 'HANGER', 'SURESTEP', 'stmetzger', 'ecogswell'];
+	var cfCusts = ["Asviray","MID46635", "SURESTEP", "davidt", "HANGER", "LUM46804"];
+	var prepAllow = ['LUM46804', 'HANGER', 'MID46635', 'SURESTEP', 'stmetzger', 'ecogswell'];
 
-	if ( prepAllow.indexOf(myCust) < 0 && prepAllow.indexOf(myUser) < 0) {
+	
+	var isPrepCust = prepAllow.indexOf(myCust) >= 0 || prepAllow.indexOf(myUser) >= 0;
+
+	if ( !isPrepCust ) 
 		$(modPrep).parents('div.config-selection-radio').hide();
-	}
+
+
 
 
 /*========================================================
 	Alternate Patterns
-		Added 2023/03/29
+		Changed 2023/10/31
 ========================================================*/
+
 	$('div.bAltPattern').hide();
+
 
 	$(document).on('click', '.config-selection-image-slider.Pattern a', function (e) {
 
-		if (  $('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value') == "MATERIALS" ) {
-			
-			if (myCust == "MID46635") 
-				$('div.bAltPattern').show();
-			
-			$('div.bAltPattern').trigger('change');
+		$('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('id','myPattern');
 		
-		} else {
+		var selectedOther = $('#myPattern').attr('data-value') == "MATERIALS";
+
+		if (  selectedOther && isPrepCust ) {
 			
+			$('div.bAltPattern').show();
+			$('div.bAltPattern').trigger('change');
+
+		} else {
+
 			$('div.bAltPattern').hide();
 		}
-		
+
 		validateRequiredImages($('.Pattern.row'));
 	});
 
 
-
 	$(document).on('change', '.bAltPattern', function (e) {
 
-		var frPtrn = $('div.bAltPattern :selected');
+		var altPattern = $('div.bAltPattern :selected');
 
-		if ( frPtrn.attr('value') ) {
+		var altPatternPN = altPattern.attr('value')? altPattern.attr('data-value'): "MATERIALS";
 
-			$('div.config-selected-image-container').children('input[field-name="cPattern_c"]').attr('data-value', frPtrn.attr('data-value'));
-			addToSummary("Pattern", frPtrn.attr('data-value'), 'cPattern_c');
-
-		} else {
-
-			addToSummary("Pattern", "MATERIALS", 'cPattern_c');
-		}
+		addToSummary("Pattern", altPatternPN, 'cPattern_c');
+		
 	});
 
 
@@ -254,8 +258,21 @@
 
 	$(modFN).on('change', function () {
 
+		
 		$('.Mod.Notes').addClass('show-mod-notes');
+
+
+		// Warning to reference ordernum, added 2023/10/31
+		var castAlert = 'Fabrication from cast selected.\n\nWhen shipping casts, please send a copy of the O-Form you receive in the confirmation email.\n\nCasts received without this O-Form may cause fabrication issues.';
+		var scanAlert = 'Fabrication from scan selected.\n\nWhen sending scans, please reference the order number you receive in the confirmation email.\n\nScans received without an order number may cause delays in fabrication.';
+
+		if ( $(this).attr("data-value") == "C" )
+			alert( castAlert );
+
+		if ( $(this).attr("data-value") == "S" )
+			alert( scanAlert );
 	});
+
 
 
 
