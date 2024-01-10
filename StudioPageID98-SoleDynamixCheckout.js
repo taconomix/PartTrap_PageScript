@@ -46,8 +46,13 @@
 ==================================================================*/
 
     $('#btnDelivery').on('click', function () {
+
+        var StateSelected = $('[id="SelectState"]').children("option:selected").attr('value').length;
+        var InvalidEmail = $('[id="BasketHead_Email"]').hasClass('field-invalid');
+
+        var ContinueAllowed = StateSelected && !InvalidEmail;
         
-        if ( $('[id="SelectState"]').children("option:selected").attr('value').length ) {
+        if ( ContinueAllowed ) {
 
             $('#btnChangeAddress').attr('style',"display: none;");
             $('#referencesField').attr('style',"margin-top: 30px; display: none;");
