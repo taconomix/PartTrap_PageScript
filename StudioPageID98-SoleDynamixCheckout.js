@@ -48,9 +48,9 @@
     $('#btnDelivery').on('click', function () {
 
         var StateSelected = $('[id="SelectState"]').children("option:selected").attr('value').length;
-        var InvalidEmail = $('[id="BasketHead_Email"]').hasClass('field-invalid');
+        var InvalidAddress = $('#addressInputFields').find('input').hasClass('field-invalid');
 
-        var ContinueAllowed = StateSelected && !InvalidEmail;
+        var ContinueAllowed = StateSelected && !InvalidAddress;
         
         if ( ContinueAllowed ) {
 
