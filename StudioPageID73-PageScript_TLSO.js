@@ -133,7 +133,7 @@
 
 
         // Warning to reference ordernum, added 2023/10/31
-        var castAlert = 'Fabrication from cast selected.\n\nWhen shipping casts, please send a copy of the O-Form you receive in the confirmation email.\n\nCasts received without this O-Form may cause fabrication issues.';
+        var castAlert = 'Fabrication from cast selected.\n\nWhen shipping casts, please send a copy of the O-Form you receive in the confirmation email.\n\nCasts received without this O-Form may cause fabrication issues.\n\nOrder will be released from "Hold" status when casts are received.';
         var scanAlert = 'Fabrication from scan selected.\n\nWhen sending scans, please reference the order number you receive in the confirmation email.\n\nScans received without an order number may cause delays in fabrication.';
 
         if ( $(this).attr("data-value") == "C" )
